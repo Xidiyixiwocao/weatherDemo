@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct CityList: View {
+    @EnvironmentObject var store: Store
     @State var expandingCityName: String?
-  //  let data : CityWeatherViewModel
+    let defaultData = CityWeatherViewModel.all
     var body: some View {
         ScrollView{
             LazyVStack{
-                ForEach(CityWeatherViewModel.all){cityWeather in
+                ForEach(store.appState.cityWeatherViewModels ){cityWeather in
                     CityCell(expanded: self.expandingCityName ==  cityWeather.cityName, model: cityWeather)
                     .onTapGesture {
                        withAnimation(
@@ -33,16 +34,13 @@ struct CityList: View {
                 }
             }
         }.onAppear{
-            print("aaaaa")
-           // self.dataModel.requestAllModel()
+            self.store.dispatch(.loadCityWeather)
         }
     }
 }
 
 struct CityList_Previews: PreviewProvider {
     static var previews: some View {
-     //   Text("sa")
-     //   CityList(data: CityWeatherViewModel(city: CityWeather(cityName: "aa")))
         CityList()
     }
 }

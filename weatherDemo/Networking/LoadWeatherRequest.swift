@@ -11,7 +11,7 @@ import Combine
 struct LoadWeatherRequest: Identifiable{
     var id: Double{cityCoordinate.0}
     
-    static var all: AnyPublisher<[CityWeatherViewModel], AppError> {
+    static var all: AnyPublisher<[WeatherModel], AppError> {
         [(57.7072326,11.9670171),//Gothenburg
          (59.3251172,18.0710935),//Stockholm
          (51.5073219,-0.1276474),//London
@@ -22,18 +22,18 @@ struct LoadWeatherRequest: Identifiable{
             .zipAll
     }
     let cityCoordinate: (Double,Double)
-    var publisher: AnyPublisher<CityWeatherViewModel, AppError> {
+    var publisher: AnyPublisher<WeatherModel, AppError> {
         weatherPulisher(cityCoordinate)
-            .map{CityWeatherViewModel(city: $0)}
+   //         .map{CityWeatherViewModel(city: $0)}
             .mapError { AppError.networkingFailed($0) }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
-    private func weatherPulisher(_ cityCoordinate: (Double,Double))-> AnyPublisher<CityWeather, Error>{
+    private func weatherPulisher(_ cityCoordinate: (Double,Double))-> AnyPublisher<WeatherModel, Error>{
         URLSession.shared
             .dataTaskPublisher(for: URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(cityCoordinate.0)&lon=\(cityCoordinate.1)&appid=b2729dd4ff34b31f998825d729fc41b2")!)
             .map{ $0.data }
-            .decode(type: CityWeather.self, decoder: appDecoder)
+            .decode(type: WeatherModel.self, decoder: appDecoder)
             .eraseToAnyPublisher()
     }
 }

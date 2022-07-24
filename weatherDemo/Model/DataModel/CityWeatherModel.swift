@@ -9,11 +9,9 @@ import Foundation
 import SwiftUI
 struct CityWeather: Codable {
     var cityName:String
-  //  var weatherIconURL:String = "http://openweathermap.org/img/wn/10d@2x.png"
     var weatherIconURL:String {
         return String("http://openweathermap.org/img/wn/10d@2x.png")
     }
-  //  let weather:[Weather]
     var color: SwiftUI.Color {
         return SwiftUI.Color(cityName)
     }

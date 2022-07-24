@@ -8,11 +8,11 @@
 import SwiftUI
 
 @main
-struct weatherDemoApp: App {
+struct WeatherDemoApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(DataModel())
+                .environmentObject(Store())
         }
     }
 }

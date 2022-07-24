@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import Metal
 extension Array where Element: Publisher {
     var zipAll: AnyPublisher<[Element.Output], Element.Failure> {
         let initial = Just([Element.Output]())
@@ -22,3 +23,15 @@ let appDecoder: JSONDecoder = {
     decoder.keyDecodingStrategy = .convertFromSnakeCase
     return decoder
 }()
+extension Array{
+    func zipArray<T>(_ secondArray:[T]) -> [(Element,T)] {
+        var result: [(Element,T)] = []
+        for index in 0...self.count-1{
+            let a = self[index]
+            let b = secondArray[index]
+            result.append((a,b))
+        }
+        return result
+    }
+}
+

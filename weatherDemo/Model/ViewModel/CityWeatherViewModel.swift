@@ -8,18 +8,21 @@
 import Foundation
 import SwiftUI
 struct CityWeatherViewModel: Identifiable, Codable{
-    var city:CityWeather
-    var id: String { city.cityName }
-    var cityName: String { city.cityName }
+  static  var defaultWeatherDes = WeatherDes(main: "--", icon: "")
+    static var defaultMain = Main(temp: 0.00)
+    var weather:WeatherModel
+    var id: String
+    var icon : String {weather.weather.first!.icon}
+    var temp : Double {weather.main.temp}
+    var mainDes : String {weather.weather.first!.main}
+    var cityName: String
     var iconImageURL: URL {
-      //  URL(string: "http://openweathermap.org/img/wn/\(city.weatherIconURL)@2x.png")!
-        URL(string: "http://openweathermap.org/img/wn/10d@2x.png")!
+        URL(string: "http://openweathermap.org/img/wn/\(icon)@2x.png")!
     }
-    var color: Color { city.color }
+    var color: Color { SwiftUI.Color(cityName) }
     static var all: [CityWeatherViewModel] = {
         ["Gothenburg","Stockholm","London","New York","Berlin"].map { cityName in
-            let cityWether = CityWeather.init(cityName: cityName)
-            let cityWetherViewModel = CityWeatherViewModel.init(city: cityWether)
+            let cityWetherViewModel = CityWeatherViewModel.init(weather: WeatherModel.init(weather: [defaultWeatherDes], main: defaultMain), id: cityName, cityName: cityName)
             return cityWetherViewModel
         }
     }()
